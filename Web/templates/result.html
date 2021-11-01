@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang = 'ko'>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+        <meta name ='viewport' content="width=device-width, initial-scale=1.0">
+        <title>혈압,혈당 예측하기</title>
+        <meta charset="UTF-8"> 
+    </head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+    <body>
+        <!-- Wrapper -->
+        <div id ='wrapper'>
+            <!-- header -->
+            <header id = 'header'>
+                <div>
+                    <!-- Logo -->
+                    <a href = '{% url "index" %}' class = 'logo'>
+                        <span class = 'symbol'><img src = '{% static "image/icon1.png"%}' alt=''/></span>
+                        <span class = 'title'>Three Minutes Hospital</span>
+                    </a>
+                </div>
+            </header>
+            <div class = 'inner'>
+                <header>
+                    <h1 id=normal><span id=highlight>혈압</span>&middot<span id=highlight>혈당</span>예측 결과<span id = 'caution'>&nbsp;&nbsp;&nbsp;  &#8251 본 서비스는 데이터를 기반으로 한 수치예측이므로 정확한 수치와 진단은 반드시 전문의와 상담하세요.</span></h1>
+                </header>
+            </div>
+        </div>
+        <div id = 'content'>
+            <ul class = 'result'>
+                <div id = 'result_message'>{{result_message}}</div>
+                <li class = result-content>
+                    <h6> 수축기 혈압 </h6>
+                    <div class = 'pred_content'>
+                        {% if result_bp == '정상' %}
+                            <span id = 'pred_highlight_green'>{{sbp_pred}}</span>
+                        {% elif result_bp == '주의' %}
+                            <span id = 'pred_highlight_yellow'>{{sbp_pred}}</span>
+                        {% else %}
+                            <span id = 'pred_highlight_red'>{{sbp_pred}}</span>
+                        {% endif %}
+                        <span id = 'mmHg'>mmHg</span>
+                    </div>
+                    <h5>systolic blood pressure</h5>
+                    <div class = 'range'>
+                        <span class = "icon"></span>
+                        <span class = 'result_color'>정상</span>
+                    </div>
+                </li>
+                <li class = result-content>
+                    <h6> 이완기 혈압 </h6>
+                    <div class = 'pred_content'>
+                        {% if result_bp == '정상' %}
+                            <span id = 'pred_highlight_green'>{{dbp_pred}}</span>
+                        {% elif result_bp == '주의' %}
+                            <span id = 'pred_highlight_yellow'>{{dbp_pred}}</span>
+                        {% else %}
+                            <span id = 'pred_highlight_red'>{{dbp_pred}}</span>
+                        {% endif %}
+                        <span id = 'mmHg'>mmHg</span>
+                    </div>
+                    <h5>diastolic blood pressure</h5>
+                    <div class = 'range'>
+                        <span class = "icon"></span>
+                        <span class = 'result_color'>주의</span>
+                    </div>
+                </li>
+                <li class = result-content>
+                    <h6> 혈당 </h6>
+                    <div class = 'pred_content'>
+                        {% if result_fbs == '정상' %}
+                            <span id = 'pred_highlight_green'>{{fbs_pred}}</span>
+                        {% elif result_fbs == '주의' %}
+                            <span id = 'pred_highlight_yellow'>{{fbs_pred}}</span>
+                        {% else %}
+                            <span id = 'pred_highlight_red'>{{fbs_pred}}</span>
+                        {% endif %}
+                        <span id = 'mmHg'>mg/dL</span>
+                    </div>
+                    <h5>fast blood sugar</h5>
+                    <div class = 'range'>
+                        <span class = "icon"></span>
+                        <span class = 'result_color'>위험</span>
+                    </div>
+                    
+                </li>
+                <div class = 'recommend'>
+                    <div class = 'recommend_title'>AI가 맞춤으로 추천해주는 영양제!</div>
+                    <div class = 'recommend_subtitle'>{{recommend_message}}</div>
+                    <div class = 'nutrients'>
+                    {%if case == 1%}    
+                        <li class = 'n_element'>
+                            <a href="https://smartstore.naver.com/vitaplan/products/5865893969" id = 'link'>
+                                <img src ='{% static "image/코로솔산.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                코로솔산
+                            </h3>
+                            <h5>&#8361 19,800 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803" id = 'link'>
+                                <img src ='{% static "image/마그네슘.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                마그네슘
+                            </h3>
+                            <h5>&#8361 10,600 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nordic-naturals-omega-3-lemon-8-fl-oz-237-ml/4191" id = 'link'>
+                                <img src ='{% static "image/오메가3.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                오메가3
+                            </h3>
+                            <h5>&#8361 26,000 </h5>
+                        </li>
+                    {% elif case == 2 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803" id = 'link'>
+                                <img src ='{% static "image/마그네슘.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                마그네슘
+                            </h3>
+                            <h5>&#8361 10,600 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/now-foods-vitamin-c-crystals-8-oz-227-g/413" id = 'link'>
+                                <img src ='{% static "image/비타민C.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                비타민C
+                            </h3>
+                            <h5>&#8361 10,500 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nordic-naturals-omega-3-lemon-8-fl-oz-237-ml/4191" id = 'link'>
+                                <img src ='{% static "image/오메가3.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                오메가3
+                            </h3>
+                            <h5>&#8361 26,000 </h5>
+                        </li>
+                    {% elif case == 3 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nordic-naturals-omega-3-lemon-8-fl-oz-237-ml/4191" id = 'link'>
+                                <img src ='{% static "image/오메가3.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                오메가3
+                            </h3>
+                            <h5>&#8361 26,000 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/doctor-s-best-lutein-with-lutemax-2020-20-mg-180-softgels/58903" id = 'link'>
+                                <img src ='{% static "image/루테인.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                루테인
+                            </h3>
+                            <h5>&#8361 36,400 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/solgar-advanced-antioxidant-formula-120-vegetable-capsules/15752" id = 'link'>
+                                <img src ='{% static "image/항산화.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                항산화
+                            </h3>
+                            <h5>&#8361 38,100 </h5>
+                        </li>
+                    {% elif case == 4 %}
+                        <li class = 'n_element'>
+                            <a href="https://smartstore.naver.com/vitaplan/products/5865893969" id = 'link'>
+                                <img src ='{% static "image/코로솔산.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                코로솔산
+                            </h3>
+                            <h5>&#8361 19,800 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/thorne-research-trace-minerals-90-capsules/18543" id = 'link'>
+                                <img src ='{% static "image/미네랄.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                미네랄
+                            </h3>
+                            <h5>&#8361 20,100 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/solgar-advanced-antioxidant-formula-120-vegetable-capsules/15752" id = 'link'>
+                                <img src ='{% static "image/항산화.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                항산화
+                            </h3>
+                            <h5>&#8361 38,100 </h5>
+                        </li>
+                    {% elif case == 5 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803" id = 'link'>
+                                <img src ='{% static "image/마그네슘.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                마그네슘
+                            </h3>
+                            <h5>&#8361 10,600 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nature-s-way-alive-once-daily-women-s-ultra-potency-complete-multi-vitamin-60-tablets/39614" id = 'link'>
+                                <img src ='{% static "image/종합비타민.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                종합비타민
+                            </h3>
+                            <h5>&#8361 19,900 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nordic-naturals-omega-3-lemon-8-fl-oz-237-ml/4191" id = 'link'>
+                                <img src ='{% static "image/오메가3.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                오메가3
+                            </h3>
+                            <h5>&#8361 26,000 </h5>
+                        </li>
+                    {% elif case == 6 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/thorne-research-trace-minerals-90-capsules/18543" id = 'link'>
+                                <img src ='{% static "image/미네랄.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                미네랄
+                            </h3>
+                            <h5>&#8361 20,100 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/solgar-advanced-antioxidant-formula-120-vegetable-capsules/15752" id = 'link'>
+                                <img src ='{% static "image/항산화.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                항산화
+                            </h3>
+                            <h5>&#8361 38,100 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nature-s-way-alive-once-daily-women-s-ultra-potency-complete-multi-vitamin-60-tablets/39614" id = 'link'>
+                                <img src ='{% static "image/종합비타민.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                종합비타민
+                            </h3>
+                            <h5>&#8361 19,900 </h5>
+                        </li>  
+                    {% elif case == 7 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803" id = 'link'>
+                                <img src ='{% static "image/마그네슘.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                마그네슘
+                            </h3>
+                            <h5>&#8361 10,600 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/natural-factors-zinc-citrate-15-mg-90-tablets/2670" id = 'link'>
+                                <img src ='{% static "image/아연.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                아연
+                            </h3>
+                            <h5>&#8361 2,650 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/childlife-vitamin-d3-natural-berry-flavor-1-fl-oz-30-ml/24742" id = 'link'>
+                                <img src ='{% static "image/비타민D.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                비타민D
+                            </h3>
+                            <h5>&#8361 7,500 </h5>
+                        </li>
+                    {% elif case == 8 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/thorne-research-trace-minerals-90-capsules/18543" id = 'link'>
+                                <img src ='{% static "image/미네랄.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                미네랄
+                            </h3>
+                            <h5>&#8361 20,100 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/nature-s-way-alive-once-daily-women-s-ultra-potency-complete-multi-vitamin-60-tablets/39614" id = 'link'>
+                                <img src ='{% static "image/종합비타민.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                종합비타민
+                            </h3>
+                            <h5>&#8361 19,900 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/natural-factors-zinc-citrate-15-mg-90-tablets/2670" id = 'link'>
+                                <img src ='{% static "image/아연.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                아연
+                            </h3>
+                            <h5>&#8361 2,650 </h5>
+                        </li>
+                    {% elif case == 9 %}
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/now-foods-gaba-with-vitamin-b-6-500-mg-200-veg-capsules/14040" id = 'link'>
+                                <img src ='{% static "image/비타민B.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                비타민B
+                            </h3>
+                            <h5>&#8361 17,500 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/childlife-vitamin-d3-natural-berry-flavor-1-fl-oz-30-ml/24742" id = 'link'>
+                                <img src ='{% static "image/비타민D.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                비타민D
+                            </h3>
+                            <h5>&#8361 7,500 </h5>
+                        </li>
+                        <li class = 'n_element'>
+                            <a href="https://kr.iherb.com/pr/life-extension-magnesium-caps-500-mg-100-vegetarian-capsules/48803" id = 'link'>
+                                <img src ='{% static "image/마그네슘.jpg"%}' alt = ''>
+                            </a> 
+                            <h3>
+                                마그네슘
+                            </h3>
+                            <h5>&#8361 10,600 </h5>
+                        </li>
+                    {%endif%}
+                    </div>
+                    <div id = 'caution'>영양제를 구입하기 전에 반드시 전문의나 약사와 상의하세요!</div>
+                </div>
+            </ul>
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang = 'ko'>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+        <meta name ='viewport' content="width=device-width, initial-scale=1.0">
+        <title>혈압,혈당 예측하기</title>
+        <meta charset="UTF-8"> 
+    </head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+    <body>
+        <!-- Wrapper -->
+        <div id ='wrapper'>
+            <!-- header -->
+            <header id = 'header'>
+                <div>
+                    <!-- Logo -->
+                    <a href = '{% url "index" %}' class = 'logo'>
+                        <span class = 'symbol'><img src = '{% static "image/icon1.png"%}' alt=''/></span>
+                        <span class = 'title'>Three Minutes Hospital</span>
+                    </a>
+                </div>
+            </header>
+            <!-- Main -->
+            <div class = 'inner'>
+                <header>
+                    <h1 id=normal>집에서 간편하게 <span id=highlight>혈압</span>과 <span id=highlight>혈당</span>수치를 예측해보세요. 3분이면 충분합니다!</h1>
+                    <p>
+                        성별, 나이, 키, 체중, 허리둘레 등 집에서 쉽게 측정할 수 있는 지표만 있으면 돼요. <br /> 
+                        누구나! 언제나! 어디서나! 저희 '건강하3'이 만든 머신러닝기반 모델로 간편하게 혈압과 혈당을 예측해보세요. 
+                    </p>
+                </header>
+            </div>
+        </div>
+        <!-- Form Wrapper -->
+        <div class = 'container'>
+            <div class = 'inner_container'>
+                <div class = 'container_title'>Self-Check</div>
+                <form action = './prediction/' method = 'POST'> {% csrf_token %}
+                    <div class = 'user-details'>
+                        <div class = 'input-box'>
+                            <span class = 'details'>나이(Age)</span>
+                            <input type = 'text' id = 'age' name = 'age' placeholder="나이를 입력하세요" required>
+                        </div>
+                        <div class ='input-box'>
+                            <span class = 'details'>키(Height)</span>
+                            <input type = 'text' id = 'ht' name = 'ht' placeholder="키(cm)를 입력하세요" required>
+                        </div>
+                        <div class = 'input-box'>
+                            <span class = 'details'>체중(Weight)</span>
+                            <input type = 'text' id = 'wt' name = 'wt' placeholder="체중(kg)을 입력하세요" required>
+                        </div>
+                        <div class = 'input-box'>
+                            <span class = 'details'>허리둘레(Waist Circumference) </span>
+                            <input type = 'text' id = 'wasit' name = 'waist' placeholder="허리둘레(cm)를 입력하세요" required>
+                        </div>             
+                    </div>
+                    <div class = 'gender-details'>
+                        <input type = 'radio' name = 'gender' id = 'dot-1' value="1">
+                        <input type = 'radio' name = 'gender' id = 'dot-2' value='2'>
+                        <span class = 'gender-title'>성별(Gender)</span>
+                        <div class = 'category'>
+                            <label for = 'dot-1'>
+                                <span class = 'dot one'></span>
+                                <span class = 'gender'>남(Male)</span>
+                            </label>
+                            <label for = 'dot-2'>
+                                <span class = 'dot two'></span>
+                                <span class = 'gender'>여(Female)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class = 'alcohol-details'>
+                        <input type = 'radio' name = 'alcohol' id = 'dot-3' value = '0'>
+                        <input type = 'radio' name = 'alcohol' id = 'dot-4' value = '1'>
+                        <span class = 'alcohol-title'>음주여부(Alcohol)</span>
+                        <div class = 'category'>
+                            <label for = 'dot-3'>
+                                <span class = 'dot three'></span>
+                                <span class = 'alcohol'>마시지 않는다.</span>
+                            </label>
+                            <label for = 'dot-4'>
+                                <span class = 'dot four'></span>
+                                <span class = 'alcohol'>마신다.</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class = 'smoking-details'>
+                        <input type = 'radio' name = 'smoking' id = 'dot-5' value = '1'>
+                        <input type = 'radio' name = 'smoking' id = 'dot-6' value = '2'>
+                        <input type = 'radio' name = 'smoking' id = 'dot-7' value = '3'>
+                        <span class = 'smoking-title'>흡연상태(Smoking)</span>
+                        <div class = 'category'>
+                            <label for = 'dot-5'>
+                                <span class = 'dot five'></span>
+                                <span class = 'smoking'>피우지 않는다.</span>
+                            </label>
+                            <label for = 'dot-6'>
+                                <span class = 'dot six'></span>
+                                <span class = 'smoking'>피웠다가 끊었다.</span>
+                            </label>
+                            <label for = 'dot-7'>
+                                <span class = 'dot seven'></span>
+                                <span class = 'smoking'>피우고 있다.</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class = 'button'>
+                        <input type = 'submit' value = '결과 확인'>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
